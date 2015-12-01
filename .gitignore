@@ -2,5 +2,10 @@
 *.so
 *.swp
 pico_status.c
-pico3k.c
+pico*.c
 build
+dist
+*.egg-info
+ps*.lib
+*.dll
+*.pyd

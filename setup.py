@@ -18,10 +18,18 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-from setuptools import setup
-from distutils.extension import Extension
-from distutils.util import get_platform
+try:
+    from setuptools import setup
+    from setuptools.extension import Extension
+    from setuptools.dist import Distribution
+    using_setuptools = True
+except ImportError:
+    from distutils.core import setup
+    from distutils.extension import Extension
+    using_setuptools = False
+
 from distutils.ccompiler import get_default_compiler
+from distutils.util import get_platform
 
 import os
 import numpy
@@ -38,6 +46,8 @@ except ImportError:
     pico4k_sources = [os.path.join('picopy', 'pico4k.c')]
     pico_status_sources = [os.path.join('picopy', 'pico_status.c')]
 
+build_requires = ['numpy>=1.6, <2.0',
+                  'pyparsing>=2.0, <3.0']
 include_dirs = [os.path.join('include', '4k'), numpy.get_include()]
 library_dirs = []
 package_data = {}
@@ -121,7 +131,7 @@ ext_modules = [
 #            sources = [os.path.join('picopy', 'pico_status.c')], 
 #           include_dirs=include_dirs)]
 
-version = '0.0.1'
+version = '0.0.2'
 
 long_description = '''
 '''
@@ -150,6 +160,17 @@ setup_args = {
         'package_data': package_data,
         'cmdclass': {'build_ext': custom_build_ext},
   }
+
+
+if using_setuptools:
+    class BinaryDistribution(Distribution):
+        def is_pure(self):
+            return False
+    setup_args['setup_requires'] = build_requires
+    setup_args['install_requires'] = build_requires
+    setup_args['include_package_data'] = True
+    setup_args['distclass'] = BinaryDistribution
+
 
 if __name__ == '__main__':
     setup(**setup_args)
