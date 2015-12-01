@@ -68,7 +68,7 @@ Now that we have shell ready we change directory (`cd`) to the build directory w
 We can't build until the propeitary PicoScope DLLs and Libs are copied into PicoPy. To get them, we need to download the [Picoscope SDK for windows](https://www.picotech.com/downloads). Select PicoScope SDK 64 bit Stable and install to the default directory. Open the directory that the SDK installed to in `C:\Program Files\Pico Technology\SDK`. Copy `inc/ps4000Api.h` into PicoPy's `include/4k` folder, and `lib/ps4000.dll`, `lib/ps4000.lib` and `lib/picoipp.dll` into `picopy/`, so that `ps4000.dll` and `ps4000.lib` are in the same directory as `__init__.py`.
 
 Build with
-> python setup.py build-ext --inplace
+> python setup.py build\_ext --inplace
 
 Everything should build successfully. If not, check the .dll and.lib file locations and that you are sitting in the correct windows SDK command shell. Finally install to our environment using
 > python setup.py install
