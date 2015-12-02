@@ -80,6 +80,7 @@ To build a wheel to share our library, run
 
 There should now be a `.whl` file file in the `/dist` folder that contains the binary files for installation onto other machines with python, for our compillation called `PicoPy-0.0.2-cp27-none-win_amd64.whl` To install the wheel file on another version of python use:
 > pip install PicoPy-0.0.2-cp27-none-win\_amd64.whl
+
 to install the binary.
 
 
