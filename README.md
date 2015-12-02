@@ -17,16 +17,13 @@ Beginners' Tutorial to Building on Windows 7 for a PicoScope 4000
 This is a line-by line build tutorial for building PicoPy using Windows 7 64 bit with Anaconda 64-bit python 2.7.10. This will be a hand-holding tutorial for new users who are unfamiliar with compiling or installing from git. Note that the Anaconda specific options are optional. They are provided as a way for a new user to follow this guide without compromising an existing install by creating a new environment.
 
 Open the windows command prompt.
->Start menu > Run... > cmd
+> Start menu > Run... > cmd
 
-Create new environment "picopy" with python 2.7. This will be the environment that we will use when we want to use the PicoPy module.
->conda create --name picopy python=2.7
+Create new environment "picopy" with python 2.7. This will be the environment that we will use when we want to use the PicoPy module. We also require cython and pyparsing installed, so let's install those to the new environment.
+>conda create --name picopy python=2.7 cython pyparsing
 
 Activate our new environment.
->activate picopy
-
-We also require cython and pyparsing installed, so let's install those to the new environment.
-> pip install cython pyparsing
+> activate picopy 
 
 Now we need to build PicoPy using the same compiler that was used to build our version of python. A helping hand are [these instructions for building Cython extensions on Windows](https://github.com/cython/cython/wiki/CythonExtensionsOnWindows). First check the python version to find how it was compiled by entering the python shell.
 > python
@@ -36,14 +33,14 @@ v.1500 64 bit (AMD64)] on win32
 
 Exit the python shell
 
->  \>\>\>exit()
+> \>\>\>exit()
 
 We can see that this version of python was compiled with MSC version 1500 64 bit. That's not very helpful, but we can use this [table](https://matthew-brett.github.io/pydagogue/python_msvc.html) to look up the compiler we actually need to install. MSC version 1500 corresponds to VC++ version 9.0, which is available on Visual Studio 2008. If we compile for 32 bit, you can use the Visual Studio Express package, which in our case would be Visual Studio 2008. For 64 bit, we need the matching SDK instead of Visual Studio. Using the [Cython build extension instructions](https://github.com/cython/cython/wiki/CythonExtensionsOnWindows#using-windows-sdk-cc-compiler-works-for-all-python-versions) we match the Python version to the SDK required.
 
 We have Python 2.7, so we need the .NET 3.5 SP1 Windows SDK.
 A web installer provided by Microsoft is located [here](https://www.microsoft.com/en-gb/download/details.aspx?id=3138) or an ISO installer located [here](https://www.microsoft.com/en-us/download/details.aspx?id=18950). We'll get the web installer as we don't want to burn a DVD or have the hassle of mounting the ISO file.
 
-Run the newly downloaded web installer ([win_sdkweb.exe](https://www.microsoft.com/en-gb/download/details.aspx?id=3138)) and install to the default directories (`C:\Program Files\Microsoft SDKs\Windows\v7.0`). We don't need the full Documentation or Samples, so you may un-tick them to prevent them from installing. We do however require the Development Tools, so leave that ticked. Press next to download the SDK.
+Run the newly downloaded web installer ([win\_sdkweb.exe](https://www.microsoft.com/en-gb/download/details.aspx?id=3138)) and install to the default directories (`C:\Program Files\Microsoft SDKs\Windows\v7.0`). We don't need the full Documentation or Samples, so you may un-tick them to prevent them from installing. We do however require the Development Tools, so leave that ticked. Press next to download the SDK.
 
 To build a package we need to start a SDK command prompt, or a regular CMD shell and then set our environment variables the match the SDK. Start our SDK command prompt from the start menu as it's easier than modifying the regular CMD shell.
 
@@ -77,5 +74,12 @@ Test by running python and importing picopy
 > python
 
 > \>\>\> import picopy
+
+To build a wheel to share our library, run
+> python setup.py bdist\_wheel
+
+There should now be a `.whl` file file in the `/dist` folder that contains the binary files for installation onto other machines with python, for our compillation called `PicoPy-0.0.2-cp27-none-win_amd64.whl` To install the wheel file on another version of python use:
+> pip install PicoPy-0.0.2-cp27-none-win\_amd64.whl
+to install the binary.
 
 

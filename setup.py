@@ -46,7 +46,9 @@ except ImportError:
     pico4k_sources = [os.path.join('picopy', 'pico4k.c')]
     pico_status_sources = [os.path.join('picopy', 'pico_status.c')]
 
-build_requires = ['pyparsing>=2.0, <3.0']
+install_requires = ['pyparsing>=2.0, <3.0']
+build_requires = ['cython>0.23'] + install_requires
+
 include_dirs = [os.path.join('include', '4k'), numpy.get_include()]
 library_dirs = []
 package_data = {}
@@ -166,7 +168,7 @@ if using_setuptools:
         def is_pure(self):
             return False
     setup_args['setup_requires'] = build_requires
-    setup_args['install_requires'] = build_requires
+    setup_args['install_requires'] = install_requires
     setup_args['include_package_data'] = True
     setup_args['distclass'] = BinaryDistribution
 
