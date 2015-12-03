@@ -6,6 +6,5 @@ pico*.c
 build
 dist
 *.egg-info
-ps*.lib
-*.dll
 *.pyd
+*\~
