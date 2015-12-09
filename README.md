@@ -17,6 +17,8 @@ Minimal example
 ```python
 import picopy
 
+scope = picopy.Pico4k()
+
 # set up the triggers to channel B
 trigger = picopy.triggers.EdgeTrigger('B', 1.0, direction='RISING')
 scope.set_trigger(trigger)
