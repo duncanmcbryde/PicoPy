@@ -11,6 +11,35 @@ The current setup is pretty specific to my (Linux) system, but it shouldn't
 be difficult to adapt to any platform for which there is a supported driver. I'm posting it on Github rather belatedly in the hope
 it might be useful. Patches of all kinds gratefully received.
 
+Minimal example
+---------------
+
+```python
+import picopy
+
+# set up the triggers to channel B
+trigger = picopy.triggers.EdgeTrigger('B', 1.0, direction='RISING')
+scope.set_trigger(trigger)
+
+# Enable both A and B channels
+scope.configure_channel('A', enable=True, voltage_range='500mV')
+scope.configure_channel('B', enable=True, voltage_range='5V')
+
+# Set sampling period to a valid sampling period that the hardware can use
+sampling_period = 1e-10
+sampling_period = scope.get_valid_sampling_period(sampling_period)
+dt = sampling_period[0]
+
+# Capture the data over 1 us
+data = scope.capture_block(sampling_period=dt, post_trigger_time=1e-6)
+A = data[0]['A'][0]
+B = data[0]['B'][0]
+
+# Create a time axis
+time = range(A.shape[0])
+time = [i * dt for i in time]
+```
+
 Beginners' Tutorial to Building on Windows 7 for a PicoScope 4000
 ---------------------
 
@@ -81,6 +110,7 @@ To build a wheel to share our library, run
 There should now be a `.whl` file file in the `/dist` folder that contains the binary files for installation onto other machines with python, for our compillation called `PicoPy-0.0.2-cp27-none-win_amd64.whl` To install the wheel file on another version of python use:
 > pip install PicoPy-0.0.2-cp27-none-win\_amd64.whl
 
-to install the binary.
+to install the binary. If you want to develop picopy at the same time, making and testing modifications, use
+> python setup.py develop
 
 
